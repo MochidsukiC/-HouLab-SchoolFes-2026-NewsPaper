@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Article } from '../types';
 
 interface HeroArticleProps {
@@ -6,6 +6,13 @@ interface HeroArticleProps {
 }
 
 const HeroArticle: React.FC<HeroArticleProps> = ({ article }) => {
+  const [mainImageError, setMainImageError] = useState(false);
+  const [bodyImageErrors, setBodyImageErrors] = useState<Record<number, boolean>>({});
+
+  const handleBodyImageError = (index: number) => {
+    setBodyImageErrors(prev => ({ ...prev, [index]: true }));
+  };
+
   return (
     <article className="mb-8 lg:mb-0">
       {/* Header Info */}
@@ -38,12 +45,30 @@ const HeroArticle: React.FC<HeroArticleProps> = ({ article }) => {
       </div>
 
       {/* Main Feature Image */}
-      <div className="relative mb-6 group cursor-pointer overflow-hidden border-4 border-white shadow-md bg-white transform -rotate-[0.5deg]">
-        <img 
-          src={article.imageUrl} 
-          alt={article.title} 
-          className="w-full h-auto object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 ease-in-out rendering-pixelated"
-        />
+      <div className="relative mb-6 group cursor-pointer overflow-hidden border-4 border-white shadow-md bg-stone-200 transform -rotate-[0.5deg] min-h-[200px]">
+        {article.imageUrl && (
+          <>
+            <img 
+              src={article.imageUrl} 
+              alt={article.title} 
+              onError={(e) => {
+                console.warn('Main image load failed:', article.imageUrl);
+                setMainImageError(true);
+                e.currentTarget.onerror = null;
+              }}
+              className={`w-full h-auto object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 ease-in-out rendering-pixelated ${mainImageError ? 'opacity-30' : ''}`}
+            />
+            {mainImageError && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="bg-paper/90 border-2 border-ink p-3 text-center transform -rotate-2 shadow-lg">
+                  <span className="block font-headline font-bold text-lg text-ink">画像調整中</span>
+                  <span className="block font-sans text-[10px] text-ink/60 mt-1 uppercase tracking-widest">Image Unavailable</span>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+        
         {article.imageCaption && (
           <figcaption className="absolute bottom-0 left-0 w-full bg-ink/80 text-paper text-xs font-sans py-1 px-3 text-right">
             {article.imageCaption}
@@ -62,14 +87,27 @@ const HeroArticle: React.FC<HeroArticleProps> = ({ article }) => {
                 </p>
               );
             } else if (block.type === 'image') {
+              const isError = bodyImageErrors[index];
               return (
                 <figure key={index} className="my-8 p-2 bg-white shadow-md border border-stone-200 transform rotate-[1deg] hover:rotate-0 transition-transform duration-300">
-                  <div className="overflow-hidden border border-stone-100">
-                      <img 
-                        src={block.src} 
-                        alt={block.caption || 'Article Image'} 
-                        className="w-full h-auto rendering-pixelated grayscale-[10%] hover:grayscale-0 transition-all duration-500" 
-                      />
+                  <div className="relative overflow-hidden border border-stone-100 min-h-[150px] bg-stone-100">
+                    <img 
+                      src={block.src} 
+                      alt={block.caption || 'Article Image'} 
+                      onError={(e) => {
+                        console.warn('Body image load failed:', block.src);
+                        handleBodyImageError(index);
+                        e.currentTarget.onerror = null;
+                      }}
+                      className={`w-full h-auto rendering-pixelated grayscale-[10%] hover:grayscale-0 transition-all duration-500 ${isError ? 'opacity-30' : ''}`} 
+                    />
+                    {isError && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="bg-paper/90 border border-ink p-2 text-center shadow-sm">
+                          <span className="block font-sans font-bold text-xs text-ink">NO PHOTO</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   {block.caption && (
                     <figcaption className="mt-2 text-sm font-sans text-ink/60 text-center font-bold tracking-tight">

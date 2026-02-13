@@ -31,9 +31,10 @@ export const HERO_ARTICLE: Article = {
   author: "取材: 佐藤甘味 / 編集: 佐藤甘味 狼月兎紀 わんと",
   date: "2/13",
   category: Category.SCHOOL,
-  imageUrl: "./images/classroom_main.png",
+  // 明示的な相対パスに変更
+  imageUrl: "./images/classroom_main.jpg",
   imageCaption: "参考画像1: 改装された1年1組の教室全景",
-  content: "2月11日の午後11:30頃に某るとら氏に1年1組に取材の許可を得て、取材をしに行ったところ...", // Summary for cards
+  content: "2月11日の午後11:30頃に某るとら氏に1年1組に取材の許可を得て、取材をしに行ったところ...", 
   body: [
     {
       type: 'text',
@@ -41,7 +42,7 @@ export const HERO_ARTICLE: Article = {
     },
     {
       type: 'image',
-      src: "./images/face_on_wall.png",
+      src: "./images/face_on_wall.jpg",
       caption: "参考画像2: 教室の後ろに飾られた謎の顔面"
     },
     {
@@ -50,7 +51,7 @@ export const HERO_ARTICLE: Article = {
     },
     {
       type: 'image',
-      src: "./images/animals_corner.png",
+      src: "./images/animals_corner.jpg",
       caption: "参考画像3: 教室の隅の動物たち"
     },
     {
