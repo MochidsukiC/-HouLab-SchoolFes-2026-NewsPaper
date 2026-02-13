@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>放らぼ高等学院 新聞写真部</title>
+    <meta name="description" content="デジタル時代の新聞体験" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              paper: '#f9f8f4',
+              ink: '#2b2b2b',
+              accent: {
+                red: '#8a3b3b',
+                blue: '#3b4b8a',
+              },
+              divider: '#dcdcdc',
+            },
+            fontFamily: {
+              serif: ['"Shippori Mincho"', '"Playfair Display"', 'serif'],
+              sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+              headline: ['"Shippori Mincho"', '"Playfair Display"', 'serif'],
+            },
+            spacing: {
+              '128': '32rem',
+            }
+          }
+        },
+        plugins: [
+          function({ addUtilities }) {
+            addUtilities({
+              '.rendering-pixelated': {
+                'image-rendering': 'pixelated',
+              },
+            })
+          }
+        ]
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+</head>
+  <body class="bg-stone-200 min-h-screen">
+    <div id="root"></div>
+  </body>
+</html>
